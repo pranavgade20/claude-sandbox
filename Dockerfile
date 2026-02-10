@@ -1,5 +1,5 @@
 # claude-sandbox: Run Claude Code CLI in an isolated container
-FROM node:24-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -14,12 +14,12 @@ RUN apt-get update && apt-get install -y \
 RUN useradd -m -s /bin/bash claude && \
     echo "claude ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-RUN npm install -g @anthropic-ai/claude-code
-
 RUN mkdir -p /workspace && chown claude:claude /workspace
 RUN mkdir -p /home/claude/.claude && chown -R claude:claude /home/claude/.claude
 
 USER claude
+RUN curl -fsSL https://claude.ai/install.sh | bash
+
 WORKDIR /workspace
 
-ENTRYPOINT ["claude", "--dangerously-skip-permissions"]
+ENTRYPOINT ["/home/claude/.claude-code/claude", "--dangerously-skip-permissions"]
