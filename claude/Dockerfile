@@ -20,6 +20,8 @@ RUN mkdir -p /home/claude/.claude && chown -R claude:claude /home/claude/.claude
 USER claude
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
+ENV PATH="/home/claude/.local/bin:$PATH"
+
 WORKDIR /workspace
 
-ENTRYPOINT ["/home/claude/.claude-code/claude", "--dangerously-skip-permissions"]
+ENTRYPOINT ["bash", "-lc", "claude --dangerously-skip-permissions \"$@\"", "--"]
