@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     vim \
     build-essential \
     python3 \
+    procps \
     sudo \
     ca-certificates \
     gnupg \
